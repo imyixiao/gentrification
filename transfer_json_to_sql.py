@@ -71,7 +71,7 @@ def reconstruct_business_json(business_json_path):
                 res_dict = json.loads(line.rstrip(';\n'))
                 id = res_dict['business_id']
                 res_json[id] = res_dict
-                print(id)
+                #print(id)
             except ValueError:
                 print("Skipping invalid line" + line)
     with open('../data/res.json', 'w') as fp:
@@ -100,7 +100,7 @@ def insert_res_from_json(business_json_path):
                 c.execute("""INSERT INTO Restaurants (id,name,address,zipcode,lat, lng, stars) VALUES \
                 (?,?,?,?,?,?,?);""", (id, name, address, zipcode, lat, lng, stars))
                 conn.commit()
-                print(id)
+                #print(id)
             except ValueError:
                 print("Skipping invalid line" + line)
     conn.close()
@@ -134,7 +134,7 @@ def insert_review_from_json(review_json_path, res_json_path):
                     c.execute("""INSERT INTO Reviews (review_id,user_id,res_id,review_date,review_year,text,star,useful,funny,cool,lat, lng, zipcode) VALUES \
                     (?,?,?,?,?,?,?,?,?,?,?,?,?);""", (review_id,user_id,res_id,review_date,review_year,text,star,useful,funny,cool, lat, lng, zipcode))
                     conn.commit()
-                    print(review_id)
+                    #print(review_id)
                 except ValueError:
                     print("Skipping invalid line" + line)
         input_data.close()
