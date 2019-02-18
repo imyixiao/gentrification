@@ -1,5 +1,6 @@
 import sqlite3
 import json
+import us_lower48_checker from inside_boundary_checker.py
 
 '''
 script:
@@ -70,6 +71,10 @@ def reconstruct_business_json(business_json_path):
             try:
                 res_dict = json.loads(line.rstrip(';\n'))
                 id = res_dict['business_id']
+                zipcode = res_dict['postal_code']
+                lat = res_dict['latitude']
+                lng = res_dict['longitude']
+                if()
                 res_json[id] = res_dict
                 #print(id)
             except ValueError:

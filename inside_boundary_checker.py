@@ -46,14 +46,14 @@ def inside_boundary_checker(shp_file_path, lat, lng):
                 return False
 
 
-def us_lower48_checker(lat, lng):
+def us_lower48_checker(lat, lng, zip):
     # http://en.wikipedia.org/wiki/Extreme_points_of_the_United_States#Westernmost
     #https://gist.github.com/jsundram/1251783
     top = 49.3457868 # north lat
     left = -124.7844079 # west long
     right = -66.9513812 # east long
     bottom =  24.7433195 # south lat
-    if bottom <= lat <= top and left <= lng <= right:
+    if bottom <= lat <= top and left <= lng <= right and len(zip) == 5 and zip.isdigit():
         return True
     return False
 
