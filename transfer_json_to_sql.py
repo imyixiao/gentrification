@@ -1,6 +1,6 @@
 import sqlite3
 import json
-import us_lower48_checker from inside_boundary_checker.py
+from inside_boundary_checker import us_lower48_checker 
 
 '''
 script:
@@ -74,9 +74,10 @@ def reconstruct_business_json(business_json_path):
                 zipcode = res_dict['postal_code']
                 lat = res_dict['latitude']
                 lng = res_dict['longitude']
-                if()
+                if us_lower48_checker(lat, lng, zipcode) is False:
+                    continue   
                 res_json[id] = res_dict
-                #print(id)
+                print(id)
             except ValueError:
                 print("Skipping invalid line" + line)
     with open('../data/res.json', 'w') as fp:
@@ -139,9 +140,9 @@ def insert_review_from_json(review_json_path, res_json_path):
                     c.execute("""INSERT INTO Reviews (review_id,user_id,res_id,review_date,review_year,text,star,useful,funny,cool,lat, lng, zipcode) VALUES \
                     (?,?,?,?,?,?,?,?,?,?,?,?,?);""", (review_id,user_id,res_id,review_date,review_year,text,star,useful,funny,cool, lat, lng, zipcode))
                     conn.commit()
-                    #print(review_id)
-                except ValueError:
-                    print("Skipping invalid line" + line)
+                    print(review_id)
+                except:
+                    continue
         input_data.close()
     res_file.close()
     conn.close()
