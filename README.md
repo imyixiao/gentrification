@@ -22,5 +22,6 @@ output: education attainment / Median Household Income /
 
 ##### retrieve_sql_database_functions.py
 ```
-To satisfy different retrieval requirements (for example retrieve all restaurants in one zipcode, and etc), lots of functions would be created in this file to be used in the future.  
+To satisfy different retrieval requirements (for example retrieve all restaurants in one zipcode, and etc), 
+lots of functions would be created in this file to be used in the future.  
 ```
