@@ -54,6 +54,6 @@ def select_all_restaurants_by_zipcode(zipcode, conn, sql_cache_path):
 
 if __name__ == "__main__":
     db_path = "../../yelp.db"
-    sql_cache_path = "../data/sql_cache.json"
+    sql_cache_path = "./data/sql_cache.json"
     conn = create_connection(db_path)
     select_all_restaurants_by_zipcode(44113, conn, sql_cache_path)
