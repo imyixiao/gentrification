@@ -1,12 +1,13 @@
 import json
 from retrieve_sql_database_functions import select_all_restaurants_by_zipcode, cache_load
+from transfer_json_to_sql import reconstruct_business_json
 import operator
 
 
 
 baseline_cache_path = "./data/baseline_cache.json"
 res_json_path = '../data/res.json'
-
+business_json_path = '../data/business.json'
 
 '''
 input: zipcode
@@ -18,7 +19,13 @@ def retreive_restaurant_category_by_zipcode(zipcode):
         res_by_zipcode_list = select_all_restaurants_by_zipcode(zipcode)
         category_dictribution_by_zipcode = dict()
         zipcode_tol = dict()
-        res_json = cache_load(res_json_path)
+        res_cache_temp = cache_load(res_json_path)
+        if not res_cache_temp:
+            reconstruct_business_json(business_json_path)
+            res_json = cache_load(res_json_path)
+        else:
+            res_json = res_cache_temp
+        
         for tuple_pair in res_by_zipcode_list:
             res_id = tuple_pair[0]
             year = tuple_pair[1]
@@ -36,7 +43,7 @@ def retreive_restaurant_category_by_zipcode(zipcode):
         with open(baseline_cache_path, 'w') as fp:
                 json.dump(baseline_cache, fp)
         fp.close()
-    return baseline_cache[zipcode]
+    return baseline_cache
 
 
 
@@ -73,3 +80,4 @@ def get_timeseri_category_data(category, zipcode):
 if __name__ == '__main__':
     #print(retreive_restaurant_category_by_zipcode(44113))
     print(get_all_categories_sorted_by_total_freq(44113))
+    

@@ -74,15 +74,16 @@ def reconstruct_business_json(business_json_path):
                 zipcode = res_dict['postal_code']
                 lat = res_dict['latitude']
                 lng = res_dict['longitude']
-                if us_lower48_checker(lat, lng, zipcode) is False:
+                if not us_lower48_checker(lat, lng, zipcode):
                     continue   
                 res_json[id] = res_dict
                 print(id)
             except ValueError:
                 print("Skipping invalid line" + line)
-    with open('../data/res.json', 'w') as fp:
-        json.dump(res_json, fp)
-    fp.close()
+        with open('../data/res.json', 'w') as fp:
+            json.dump(res_json, fp)
+        fp.close()
+    inputData.close()
 
 
 
