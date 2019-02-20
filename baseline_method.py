@@ -6,7 +6,7 @@ import operator
 
 
 baseline_cache_path = "./data/baseline_cache.json"
-res_json_path = './data/res.json'
+res_json_path = '../yelp_data/res.json'
 
 
 

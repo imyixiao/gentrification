@@ -3,7 +3,7 @@ import json
 from inside_boundary_checker import us_lower48_checker 
 
 business_json_path = '../yelp_data/business.json'
-res_json_path = './data/res.json'
+res_json_path = '../yelp_data/res.json'
 review_json_path = '../yelp_data/review.json'
 db_path = "../yelp_data/yelp.db"
 
