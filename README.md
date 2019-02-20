@@ -24,6 +24,17 @@ res.json -> reconstruct business.json, key would be restaurant id, which will be
 (sqlite table) review -> include review info and restaurant location information 
 ```
 
+##### transfer_csv_to_sql.py
+```
+transfer zillow csv file to sql
+```
+
+
+##### variable_collections.py
+```
+all global variables, could be imported to different files
+```
+
 ##### inside_boundary_checker.py
 ```
 input: lat, lng, shp file
@@ -39,4 +50,9 @@ lots of functions would be created in this file to be used in the future.
 ##### generate_visual_data_from_zillow.py
 ```
 contains functions to satisify different data preparation requirements for visualization
+```
+
+##### baseline_method.py
+```
+baseline method code
 ```

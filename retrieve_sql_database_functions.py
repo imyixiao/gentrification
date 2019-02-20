@@ -1,10 +1,8 @@
 import sqlite3
 from sqlite3 import Error
 import json
+from variable_collections import db_path, sql_cache_path
 
-
-db_path = "../yelp_data/yelp.db"
-sql_cache_path = "./data/sql_cache.json"
 
 
 '''

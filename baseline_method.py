@@ -2,11 +2,8 @@ import json
 from retrieve_sql_database_functions import select_all_restaurants_by_zipcode, cache_load
 from transfer_json_to_sql import reconstruct_business_json
 import operator
+from variable_collections import baseline_cache_path, res_json_path
 
-
-
-baseline_cache_path = "./data/baseline_cache.json"
-res_json_path = '../yelp_data/res.json'
 
 
 
