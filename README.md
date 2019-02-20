@@ -1,3 +1,19 @@
+#### my folder structure
+```
+gentrification/
+  code(my github repo)/
+     baseline_method.py
+     ...(all code)
+     data/
+        baseline_cache.json
+        sql_cache.json
+  yelp_data/
+     business.json
+     res.json
+     review.json
+     yelp.db
+```
+
 ##### transfer_json_to_sql.py
 ```
 script:
@@ -14,14 +30,13 @@ input: lat, lng, shp file
 output: boolean, true if in boundary, false if not in boundary
 ```
 
-##### acs_access.py
-```
-input: zipcode, year
-output: education attainment / Median Household Income / 
-```
-
 ##### retrieve_sql_database_functions.py
 ```
 To satisfy different retrieval requirements (for example retrieve all restaurants in one zipcode, and etc), 
 lots of functions would be created in this file to be used in the future.  
+```
+
+##### generate_visual_data_from_zillow.py
+```
+contains functions to satisify different data preparation requirements for visualization
 ```
