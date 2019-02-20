@@ -12,7 +12,7 @@ res_json_path = '../yelp_data/res.json'
 
 '''
 input: zipcode
-output: dict, key would be category, and value would be dict (key would be year, value would be frequency)
+output: dict, key would be category, and value would be dict (key would be time(formate as yyyy-mm), value would be frequency)
 '''
 def retreive_restaurant_category_by_zipcode(zipcode):
     baseline_cache = cache_load(baseline_cache_path)
@@ -29,9 +29,15 @@ def retreive_restaurant_category_by_zipcode(zipcode):
         else:
             res_json = res_cache_temp
 
-        for tuple_pair in res_by_zipcode_list:
-            res_id = tuple_pair[0]
-            year = tuple_pair[1]
+        for triple in res_by_zipcode_list:
+            res_id = triple[0]
+            year = triple[1]
+            month = triple[2]
+            if month < 10:
+                alter_month = "0" + str(month)
+            else:
+                alter_month = str(month)
+            time = str(year) + "-" + alter_month
             res_info = res_json[res_id]
 
             try:
@@ -43,9 +49,9 @@ def retreive_restaurant_category_by_zipcode(zipcode):
                     if c not in category_dictribution_by_zipcode:
                         category_dictribution_by_zipcode[c] = dict()
                         category_tol[c] = 0
-                    if year not in category_dictribution_by_zipcode[c]:
-                        category_dictribution_by_zipcode[c][year] = 0
-                    category_dictribution_by_zipcode[c][year] += 1
+                    if time not in category_dictribution_by_zipcode[c]:
+                        category_dictribution_by_zipcode[c][time] = 0
+                    category_dictribution_by_zipcode[c][time] += 1
                     category_tol[c] += 1
             except:
                 continue
@@ -56,7 +62,7 @@ def retreive_restaurant_category_by_zipcode(zipcode):
         with open(baseline_cache_path, 'w') as fp:
             json.dump(baseline_cache, fp)
         fp.close()
-
+        
     return baseline_cache
 
 
@@ -77,7 +83,7 @@ def get_all_categories_sorted_by_total_freq(zipcode):
 
 '''
 input: category, zipcode
-output: dictionary, key is year, value is freq, 
+output: dictionary, key is time(formate as yyyy-mm), value is freq, 
 '''
 def get_timeseri_category_data(category, zipcode):
     res_distribution = retreive_restaurant_category_by_zipcode(zipcode)
@@ -91,8 +97,12 @@ def get_timeseri_category_data(category, zipcode):
 
 
 if __name__ == '__main__':
-    print(retreive_restaurant_category_by_zipcode(44113))
-    print(get_all_categories_sorted_by_total_freq(44113))
+    #print(retreive_restaurant_category_by_zipcode(44113))
+    #print(get_all_categories_sorted_by_total_freq(44113))
     print(get_timeseri_category_data('food', 44113))
+    #l = ['1800-10','1800-9']
+    #l.sort()
+    #print(l)
+
     
     

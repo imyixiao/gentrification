@@ -53,7 +53,7 @@ def select_all_restaurants_by_zipcode(zipcode):
     key = "select_all_restaurants_by_zipcode_" + str(zipcode) 
     sql_cache = cache_load(sql_cache_path)
     if key not in sql_cache:
-        cur.execute(" SELECT res_id, review_year FROM Reviews Where zipcode = ?", (zipcode, ))
+        cur.execute(" SELECT res_id, review_year, review_month FROM Reviews Where zipcode = ?", (zipcode, ))
         rows = cur.fetchall()
         sql_cache[key] = rows
         with open(sql_cache_path, 'w') as fp:
@@ -63,5 +63,4 @@ def select_all_restaurants_by_zipcode(zipcode):
 
 
 if __name__ == "__main__":
-    #select_all_restaurants_by_zipcode(44113)
-    print(cache_load("./data/test.json"))
+    select_all_restaurants_by_zipcode(44113)

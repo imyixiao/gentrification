@@ -228,17 +228,21 @@ or run this function to add field and insert data
 def add_review_month_in_review_table(path = db_path):
     conn = sqlite3.connect(path)
     c = conn.cursor()
-    c.execute('alter table test add column review_month integer')
+    
+    c.execute('alter table Reviews add column review_month integer')
     conn.commit()
     
     rev_ids = []
     rev_months = []
-    rows = c.execute('SELECT review_id, review_date FROM test')
+    rows = c.execute('SELECT review_id, review_date FROM Reviews')
     for row in rows:
         rev_ids.append(row[0])
+        #print(row[1])
         rev_months.append(row[1].split("-")[1])
     
-    c.executemany('UPDATE test SET review_month = ? WHERE review_id=?', (rev_months, rev_ids))
+    #print(rev_ids)
+    #print(rev_months)
+    c.executemany('UPDATE Reviews SET review_month = ? WHERE review_id=?', zip(rev_months, rev_ids))
     conn.commit()
 
     conn.close()
