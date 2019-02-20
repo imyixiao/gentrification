@@ -91,8 +91,8 @@ def get_timeseri_category_data(category, zipcode):
 
 
 if __name__ == '__main__':
-    #print(retreive_restaurant_category_by_zipcode(44113))
-    #print(get_all_categories_sorted_by_total_freq(44113))
+    print(retreive_restaurant_category_by_zipcode(44113))
+    print(get_all_categories_sorted_by_total_freq(44113))
     print(get_timeseri_category_data('food', 44113))
     
     
