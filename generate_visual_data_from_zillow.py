@@ -1,8 +1,6 @@
 import pandas 
 
-
-zillow_path = "../zillow_data/Zip_time_series.csv"
-cols_needed = ['MedianListingPricePerSqft_AllHomes']
+from variable_collections import zillow_path, cols_needed
 
 
 '''

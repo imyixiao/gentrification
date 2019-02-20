@@ -1,10 +1,7 @@
 import sqlite3
 import pandas 
+from variable_collections import db_path, zillow_path, cols_required, cols_opt
 
-db_path = "../yelp_data/yelp.db"
-zillow_path = "../zillow_data/Zip_time_series.csv"
-cols_required = ['Date', 'RegionName']
-cols_opt = ['MedianListingPrice_AllHomes','MedianListingPrice_CondoCoop','MedianListingPrice_SingleFamilyResidence','MedianListingPrice_DuplexTriplex']
 
 '''
 functions used to transfer csv format file to sql format tables
