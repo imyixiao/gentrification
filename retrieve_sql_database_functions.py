@@ -3,7 +3,7 @@ from sqlite3 import Error
 import json
 
 
-db_path = "../../yelp.db"
+db_path = "../yelp_data/yelp.db"
 sql_cache_path = "./data/sql_cache.json"
 
 
@@ -30,11 +30,13 @@ def create_connection():
 
 
 def cache_load(cache_path):
-    cache = dict()
-    try: 
-        cache = json.loads(cache_path)
-        return cache
+    try:
+        with open(cache_path) as fp:
+            cache = json.load(fp)
+            return cache
+        fp.close()
     except:
+        cache = {}
         with open(cache_path, 'w') as fp:
             json.dump(cache, fp)
         fp.close()
@@ -61,4 +63,5 @@ def select_all_restaurants_by_zipcode(zipcode):
 
 
 if __name__ == "__main__":
-    select_all_restaurants_by_zipcode(44115)
+    #select_all_restaurants_by_zipcode(44113)
+    print(cache_load("./data/test.json"))

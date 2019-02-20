@@ -2,6 +2,13 @@ import sqlite3
 import json
 from inside_boundary_checker import us_lower48_checker 
 
+business_json_path = '../yelp_data/business.json'
+res_json_path = './data/res.json'
+review_json_path = '../yelp_data/review.json'
+db_path = "../yelp_data/yelp.db"
+
+
+
 '''
 script:
 python3 transfer_json_to_sql.py
@@ -12,13 +19,12 @@ res.json -> reconstruct business.json, key would be restaurant id, which will be
 '''
 
 
-
 '''
 create restaurant table, this table is used to fast retrieve res location information
 which will be used to insert location data into review table
 '''
 def create_res_table():
-    conn = sqlite3.connect('yelp.db')
+    conn = sqlite3.connect(db_path)
     c = conn.cursor()
     c.execute("""CREATE TABLE IF NOT EXISTS Restaurants
        (id  CHAR(50)  PRIMARY KEY     NOT NULL,
@@ -40,7 +46,7 @@ create review table, add zipcode, lat, lng information into table
 this table will be the main data source we will use in the future
 '''
 def create_review_table():
-    conn = sqlite3.connect('yelp.db')
+    conn = sqlite3.connect(db_path)
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS Reviews
        (review_id  CHAR(50)  PRIMARY KEY     NOT NULL,
@@ -64,7 +70,7 @@ def create_review_table():
 '''
 reconstruct business json file, key is restaurant id, value is retaurant dict 
 '''
-def reconstruct_business_json(business_json_path):
+def reconstruct_business_json():
     res_json = dict()
     with open(business_json_path) as inputData:
         for line in inputData:
@@ -77,21 +83,18 @@ def reconstruct_business_json(business_json_path):
                 if not us_lower48_checker(lat, lng, zipcode):
                     continue   
                 res_json[id] = res_dict
-                print(id)
             except ValueError:
                 print("Skipping invalid line" + line)
-        with open('../data/res.json', 'w') as fp:
+        with open(res_json_path, 'w') as fp:
             json.dump(res_json, fp)
-        fp.close()
-    inputData.close()
 
 
 
 '''
 insert basic information from business.json to res table
 '''
-def insert_res_from_json(business_json_path):
-    conn = sqlite3.connect('yelp.db')
+def insert_res_from_json():
+    conn = sqlite3.connect(db_path)
     c = conn.cursor()
     with open(business_json_path) as inputData:
         for line in inputData:
@@ -116,8 +119,8 @@ def insert_res_from_json(business_json_path):
 '''
 insert basic review information from review.json to review table
 '''
-def insert_review_from_json(review_json_path, res_json_path):
-    conn = sqlite3.connect('yelp.db')
+def insert_review_from_json():
+    conn = sqlite3.connect(db_path)
     c = conn.cursor()
     with open(res_json_path) as res_file:
         res_json = json.load(res_file)
@@ -141,7 +144,7 @@ def insert_review_from_json(review_json_path, res_json_path):
                     c.execute("""INSERT INTO Reviews (review_id,user_id,res_id,review_date,review_year,text,star,useful,funny,cool,lat, lng, zipcode) VALUES \
                     (?,?,?,?,?,?,?,?,?,?,?,?,?);""", (review_id,user_id,res_id,review_date,review_year,text,star,useful,funny,cool, lat, lng, zipcode))
                     conn.commit()
-                    print(review_id)
+                    #print(review_id)
                 except:
                     continue
         input_data.close()
@@ -155,10 +158,7 @@ if __name__ == '__main__':
     create_review_table()
 
     print("reconstruct business json")
-    business_json_path = '../data/business.json'
-    reconstruct_business_json(business_json_path)
+    reconstruct_business_json()
 
     print("insert review data into sql table")
-    res_json_path = '../data/res.json'
-    review_json_path = '../data/review.json'
-    insert_review_from_json(review_json_path, res_json_path)
+    #insert_review_from_json()
