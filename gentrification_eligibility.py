@@ -2,8 +2,6 @@ import pandas as pd
 from variable_collections import gentrification_eligibility_path
 
 
-
-
 def check_gentrification_eligibility(zipcode, year):
     zipcode = int(zipcode)
     year = str(year)
@@ -16,6 +14,8 @@ def check_gentrification_eligibility(zipcode, year):
     else:
         result = 'Not Eligible'
     return result
+
+
 
 
 if __name__ == "__main__":
