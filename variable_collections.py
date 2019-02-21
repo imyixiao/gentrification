@@ -38,7 +38,7 @@ opt cols are cols we want add in the base of required cols
 '''
 cols_required = ['Date', 'RegionName']
 cols_opt = ['MedianListingPrice_AllHomes','MedianListingPrice_CondoCoop','MedianListingPrice_SingleFamilyResidence','MedianListingPrice_DuplexTriplex']
-
+cols_all = {} # key : colname , value : index in csv file
 
 '''
 business.json and review.json from yelp dataset website

@@ -1,6 +1,8 @@
 import sqlite3
 import pandas 
-from variable_collections import db_path, zillow_path, cols_required, cols_opt
+from variable_collections import db_path, zillow_path, cols_required, cols_opt, cols_all
+import csv    
+
 
 
 '''
@@ -8,10 +10,30 @@ functions used to transfer csv format file to sql format tables
 '''
 
 
+
 '''
-create zillow table
+read zillow csv file to save all col names into global variable cols_all
+in cols_all, key is col name, value is index, which will be used in other functions
 '''
-def create_zillow_table(table_name):
+def read_zillow_header(zillow_path = zillow_path):
+    cols_all = {}
+    index = 0
+    with open(zillow_path, 'r') as infile:
+        reader = csv.DictReader(infile)
+        fieldnames = reader.fieldnames
+        for field in fieldnames:
+            cols_all[field] = index
+            index += 1
+    infile.close()
+    return cols_all
+    
+
+
+
+'''
+create zillow sql table with col required and col_opt(defined in variable collections)
+'''
+def create_zillow_table(table_name, cols_opt = cols_opt):
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
     state = "CREATE TABLE IF NOT EXISTS " + table_name
@@ -30,59 +52,63 @@ def create_zillow_table(table_name):
     conn.close()
 
 
-def insert_from_csv_to_sql(csv_path = zillow_path, table_name = 'Zillow', cols = cols_opt):
+
+
+
+
+def insert_from_csv_to_sql(csv_path = zillow_path, table_name = 'Zillow', cols = cols_opt, cols_all = cols_all):
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
-    zillow_pd = pandas.read_csv(zillow_path)
-    for index, row in zillow_pd.iterrows():
+
+    if not cols_all:
+        cols_all = read_zillow_header()
+    print(cols_all)
+    
+    print("start insert data")
+    zillow_file = open(csv_path, "r")
+    reader = csv.reader(zillow_file)
+    for row in reader:
         try:
-            date = row['Date']
-            date_list = date.split("-")
-            year = date_list[0]
-            month = date_list[1]
+            print(row)
+            date = row[0]
+            region_name = row[1]
+            year = date.split("-")[0]
+            month = date.split("-")[1]
             new_date = year + "-" + month
-            region_name = row['RegionName']
-            state = "INSERT INTO " + table_name + " (Date, year, month, RegionName"
+            
             vals = [new_date, year, month, region_name]
-            for c in cols:
-                vals.append(row[c])
+            state = "INSERT INTO " + table_name + " (Date, year, month, RegionName"
+
+            for col in cols:
+                if len(row[cols_all[col]]) == 0:
+                    vals.append(0)
+                else:
+                    vals.append(row[cols_all[col]])
                 state += ", "
-                state += c
+                state += col
+            
+
             state += ") VALUES (?,?,?,?"
-            for i in range(len(c)):
+            for i in range(len(cols)):
                 state += ",?"
             state += ");"
+
             c.execute(state, zip(vals))
             conn.commit()
-        except ValueError:
-                print("Skipping invalid row" + row)
+            print("inserted " + str(region_name) + " in " + str(new_date))
+
+        except:
+            continue
+               
+        
     conn.close()
-
-
-def generate_part_info_csv_table(zillow_part_info_path, cols_optional = cols_opt):
-    zillow_whole = pandas.read_csv(zillow_path)
-    cols = ['Date','RegionName']
-    cols.extend(cols_optional)
-    
-    all_vals = dict()
-    for c in cols:
-        all_vals[c] = [] 
-    
-    for index, row in zillow_whole.iterrows():
-        if index > 10:
-            break;
-        print(index)
-        all_vals['Date'].append(row['Date'])
-        all_vals['RegionName'].append(row['RegionName'])
-        for opt_col in cols_optional:
-            all_vals[opt_col].append(row[opt_col])
-    
-    zillow_part = pandas.DataFrame(all_vals)
-    zillow_part.to_csv(zillow_part_info_path, encoding='utf-8', index=False)
-    return zillow_part
 
 
 
 if __name__ == "__main__":
-    #create_zillow_table('Zillow')
-    generate_part_info_csv_table('./data/zillow_part.csv')
+    '''
+    predefine that we need zillow table with cols including date, region_name, 
+    and col_opt including several cols, we could use different col_opt
+    '''
+    create_zillow_table('Zillow')
+    insert_from_csv_to_sql()
