@@ -2,7 +2,7 @@ import sqlite3
 from sqlite3 import Error
 import json
 from variable_collections import yelp_db_path, sql_cache_path, cols_opt, zillow_db_path
-
+from cache_management import cache_load
 
 
 '''
@@ -24,21 +24,6 @@ def create_connection(db_path):
     except Error as e:
         print(e)
     return None
-
-
-
-def cache_load(cache_path):
-    try:
-        with open(cache_path) as fp:
-            cache = json.load(fp)
-            return cache
-        fp.close()
-    except:
-        cache = {}
-        with open(cache_path, 'w') as fp:
-            json.dump(cache, fp)
-        fp.close()
-        return cache
 
 
 '''
@@ -80,7 +65,7 @@ def select_all_zillow_records_by_zipcode(zipcode, fields = cols_opt, table_name 
                 state += " ,"
         state += " FROM "
         state += table_name
-        state += " WHERE RegionName = ?"
+        state += " WHERE RegionName = ? ORDER BY Date"
         
         cur.execute(state, (zipcode, ))
         rows = cur.fetchall()

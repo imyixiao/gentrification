@@ -72,7 +72,10 @@ def get_all_categories_sorted_by_total_freq(zipcode):
     baseline_cache = cache_load(baseline_cache_path)
     if zipcode not in baseline_cache:
         retreive_restaurant_category_by_zipcode(zipcode)
-    return [l[0] for l in baseline_cache[(str(zipcode) + "tol")]]
+    try:
+        return [l[0] for l in baseline_cache[(str(zipcode) + "tol")]]
+    except:
+        print("this zipcode is not existed in yelp database")
 
 
 
