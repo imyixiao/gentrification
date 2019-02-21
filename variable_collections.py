@@ -21,7 +21,7 @@ zillow_path = "../zillow_data/Zip_time_series.csv"
 '''
 yelp databse path
 '''
-db_path = "../yelp_data/yelp.db"
+db_path = "../tables.db"
 
 
 '''
@@ -45,3 +45,6 @@ business.json and review.json from yelp dataset website
 '''
 business_json_path = '../yelp_data/business.json'
 review_json_path = '../yelp_data/review.json'
+
+
+gentrification_eligibility_path = './data/gentrification_eligibility.csv'
