@@ -1,17 +1,21 @@
 #### my folder structure
 ```
 gentrification/
-  code(my github repo)/
-     baseline_method.py
-     ...(all code)
-     data/
-        baseline_cache.json
-        sql_cache.json
-  yelp_data/
-     business.json
-     res.json
-     review.json
-     yelp.db
+   code(my github repo)/
+      baseline_method.py
+      ...(all code)
+      data/
+         baseline_cache.json
+         sql_cache.json
+         gentrification_eligibility.csv
+   yelp_data/
+      business.json
+      res.json
+      review.json
+   zillow_data/
+      Zip_time_series.csv
+   yelp.db
+   zillow.db
 ```
 
 ##### transfer_json_to_sql.py
