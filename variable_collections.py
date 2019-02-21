@@ -21,7 +21,8 @@ zillow_path = "../zillow_data/Zip_time_series.csv"
 '''
 yelp databse path
 '''
-db_path = "../tables.db"
+yelp_db_path = "../yelp.db"
+zillow_db_path = "../zillow.db"
 
 
 '''

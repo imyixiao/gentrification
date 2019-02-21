@@ -1,7 +1,7 @@
 import sqlite3
 import json
 from inside_boundary_checker import us_lower48_checker 
-from variable_collections import business_json_path, res_json_path, review_json_path, db_path
+from variable_collections import business_json_path, res_json_path, review_json_path, yelp_db_path
 
 
 
@@ -20,7 +20,7 @@ create restaurant table, this table is used to fast retrieve res location inform
 which will be used to insert location data into review table
 '''
 def create_res_table():
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(yelp_db_path)
     c = conn.cursor()
     c.execute("""CREATE TABLE IF NOT EXISTS Restaurants
        (id  CHAR(50)  PRIMARY KEY     NOT NULL,
@@ -42,7 +42,7 @@ create review table, add zipcode, lat, lng information into table
 this table will be the main data source we will use in the future
 '''
 def create_review_table():
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(yelp_db_path)
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS Reviews
        (review_id  CHAR(50)  PRIMARY KEY     NOT NULL,
@@ -69,7 +69,7 @@ create review table, add zipcode, lat, lng information into table
 this table will be the main data source we will use in the future
 '''
 def create_review_table_v2():
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(yelp_db_path)
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS Reviews
        (review_id  CHAR(50)  PRIMARY KEY     NOT NULL,
@@ -118,7 +118,7 @@ def reconstruct_business_json():
 insert basic information from business.json to res table
 '''
 def insert_res_from_json():
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(yelp_db_path)
     c = conn.cursor()
     with open(business_json_path) as inputData:
         for line in inputData:
@@ -144,7 +144,7 @@ def insert_res_from_json():
 insert basic review information from review.json to review table
 '''
 def insert_review_from_json():
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(yelp_db_path)
     c = conn.cursor()
     with open(res_json_path) as res_file:
         res_json = json.load(res_file)
@@ -182,7 +182,7 @@ version 2: add a new field, review month
 insert basic review information from review.json to review table
 '''
 def insert_review_from_json_v2():
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(yelp_db_path)
     c = conn.cursor()
     with open(res_json_path) as res_file:
         res_json = json.load(res_file)
@@ -221,7 +221,7 @@ in previous version, review table has no field of review month,
 we could either run creat table and insert data again(time consuming)
 or run this function to add field and insert data
 '''
-def add_review_month_in_review_table(path = db_path):
+def add_review_month_in_review_table(path = yelp_db_path):
     conn = sqlite3.connect(path)
     c = conn.cursor()
     
