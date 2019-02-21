@@ -43,7 +43,7 @@ def create_zillow_table(table_name, cols_opt = cols_opt):
        " month INT  , " \
        " RegionName CHAR(10)" 
     for col in cols_opt:
-        state += "," + str(col) + "   TEXT "
+        state += "," + str(col) + "   INT "
     state += ")"
     #print(state)
     c.execute(state)
@@ -62,14 +62,13 @@ def insert_from_csv_to_sql(csv_path = zillow_path, table_name = 'Zillow', cols =
 
     if not cols_all:
         cols_all = read_zillow_header()
-    print(cols_all)
     
     print("start insert data")
     zillow_file = open(csv_path, "r")
     reader = csv.reader(zillow_file)
     for row in reader:
         try:
-            print(row)
+            #print(row)
             date = row[0]
             region_name = row[1]
             year = date.split("-")[0]
@@ -93,12 +92,13 @@ def insert_from_csv_to_sql(csv_path = zillow_path, table_name = 'Zillow', cols =
                 state += ",?"
             state += ");"
 
-            c.execute(state, zip(vals))
+            print(vals)
+            c.execute(state, vals)
             conn.commit()
             print("inserted " + str(region_name) + " in " + str(new_date))
 
-        except:
-            continue
+        except Exception as e:
+            print(str(e))
                
         
     conn.close()

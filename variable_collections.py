@@ -37,7 +37,7 @@ required cols are cols always in new csv
 opt cols are cols we want add in the base of required cols 
 '''
 cols_required = ['Date', 'RegionName']
-cols_opt = ['MedianListingPrice_AllHomes','MedianListingPrice_CondoCoop','MedianListingPrice_SingleFamilyResidence','MedianListingPrice_DuplexTriplex']
+cols_opt = ['ZHVIPerSqft_AllHomes', 'ZHVI_1bedroom', 'ZHVI_2bedroom','ZHVI_3bedroom', 'ZHVI_4bedroom', 'ZHVI_5BedroomOrMore','ZHVI_AllHomes', 'ZHVI_BottomTier', 'ZHVI_CondoCoop', 'ZHVI_MiddleTier','ZHVI_SingleFamilyResidence', 'ZHVI_TopTier', 'ZRI_AllHomes']
 cols_all = {} # key : colname , value : index in csv file
 
 '''

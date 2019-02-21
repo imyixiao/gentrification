@@ -1,7 +1,7 @@
 import sqlite3
 from sqlite3 import Error
 import json
-from variable_collections import db_path, sql_cache_path
+from variable_collections import db_path, sql_cache_path, cols_opt
 
 
 
@@ -60,5 +60,39 @@ def select_all_restaurants_by_zipcode(zipcode):
     return sql_cache[key]
 
 
+
+'''
+input zipcode, list of fields needed (optional)
+output return all zillow record in this zipcode
+'''
+def select_all_zillow_records_by_zipcode(zipcode, fields = cols_opt, table_name = "Zillow"):
+    conn = create_connection()
+    cur = conn.cursor()
+    key = "select_all_zillow_records_by_zipcode_" + str(zipcode) + str(fields)
+    sql_cache = cache_load(sql_cache_path)
+
+    if key not in sql_cache:
+
+        state = " SELECT "
+        for index, f in enumerate(fields):
+            state += f
+            if index != len(fields) - 1:
+                state += " ,"
+        state += " FROM "
+        state += table_name
+        state += " WHERE RegionName = ?"
+        
+        cur.execute(state, (zipcode, ))
+        rows = cur.fetchall()
+        sql_cache[key] = rows
+
+        with open(sql_cache_path, 'w') as fp:
+                json.dump(sql_cache, fp)
+        fp.close()
+
+    return sql_cache[key]
+
+
 if __name__ == "__main__":
-    select_all_restaurants_by_zipcode(44113)
+    #select_all_restaurants_by_zipcode(44113)
+    print(select_all_zillow_records_by_zipcode(44113))
