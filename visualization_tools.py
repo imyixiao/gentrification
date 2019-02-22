@@ -14,11 +14,13 @@ def plot_category_and_zillow_timeseri(category, zipcode, zillow_metric):
     
     #choose one category and check its time series data in this zipcode
     category_seri = get_timeseri_category_data(category, zipcode)
-    print("category time seri data : " + category_seri)
+    print("category time seri data : ")
+    print(category_seri)
 
     #get house prices seri data in this zipcode could choose metrics we want
     house_price_seri = select_all_zillow_records_by_zipcode(zipcode, fields = [zillow_metric])
-    print("house price time seri data : " + house_price_seri)
+    print("house price time seri data : " )
+    print(house_price_seri)
 
     category_time = []
     category_freq = []
@@ -49,6 +51,13 @@ def plot_category_and_zillow_timeseri(category, zipcode, zillow_metric):
     #print(category_time)
     #print(category_freq)
 
-    #1000 is eligible, 2000 is not 
-    plt.plot(category_time, [c * 1000 for c in category_freq], 'r--', house_time, house_price, 'bs', house_time, [s * 1000 for s in gentri_status], 'g^')
+    #10000 is eligible, 20000 is not 
+    plt.plot(category_time, [c * 1000 for c in category_freq], 'r--', label='category line')
+    plt.plot(house_time, house_price, 'bs', label= 'zillow ' + zillow_metric)
+    plt.plot(house_time, [s * 10000 for s in gentri_status], 'g^', label = "eligibility")
+    plt.legend(loc='upper right')
     plt.show()
+
+
+if __name__ == "__main__":
+    plot_category_and_zillow_timeseri('italian', '44113', 'ZHVI_SingleFamilyResidence')

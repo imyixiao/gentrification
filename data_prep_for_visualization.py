@@ -92,3 +92,9 @@ def get_timeseri_category_data(category, zipcode):
         return sorted_output
     except:
         print("category can not be found in this zipcode")
+
+
+
+if __name__ == "__main__":
+    #print(get_all_categories_sorted_by_total_freq('44113'))
+    print(get_timeseri_category_data('italian', '44113'))

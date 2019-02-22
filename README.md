@@ -1,3 +1,37 @@
+#### environment setting before running code
+```
+#clone github to local, in terminal 
+1. git init
+2. git clone https://github.com/imyixiao/gentrification.git
+3. cd gentrification
+
+#set environment
+conda env create -f ./new_env.yaml
+
+#activate environmrnt
+source activate new_env
+
+#if you want to deactivate environment 
+source deactivate new_env
+
+#when you run functions, should activate environment
+```
+
+#### data preparation before running baseline_method
+```
+#get yelp sql database, could download from google drive, could also run script #below, to run script, should download yelp dataset and unzip it, put it in path
+#gentrification/yelp_data/
+python3 transfer_json_to_sql.py
+
+#get zillow sql database, run script, to run script, should download zillow #dataset from kaggle and put them in path gentrification/zillow_data/
+python3 transfer_csv_to_sql.py
+```
+
+#### run baseline_method, and get visualization result
+```
+python3 
+```
+
 #### my folder structure
 ```
 gentrification/
