@@ -28,7 +28,7 @@ python3 transfer_csv_to_sql.py
 
 #### run baseline_method, and get visualization result
 ```
-python3 
+python3 baseline_method.py
 ```
 
 #### my folder structure
