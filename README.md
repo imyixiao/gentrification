@@ -31,6 +31,9 @@ python3 transfer_csv_to_sql.py
 python3 baseline_method.py
 ```
 
+![italian category restaurant in zipcode 44113](example.png)
+
+
 #### my folder structure
 ```
 gentrification/
