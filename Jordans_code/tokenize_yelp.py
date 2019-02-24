@@ -66,6 +66,7 @@ def select_rows():
 
 select_rows()
 
+
 ### Insert into database
 def populate_df(column_name):
     global db
