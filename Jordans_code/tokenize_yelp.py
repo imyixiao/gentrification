@@ -2,6 +2,8 @@ import sqlite3 as sqlite
 from sqlite3 import Error
 import sys
 import os
+import regex as re
+import tqdm
 
 # import PySpark
 
@@ -30,7 +32,7 @@ def connect_check_column(column_name):
     global db
     global table_name
 
-    column_type = "CHAR(50)"
+    column_type = "TEXT"
 
     conn= sqlite.connect(db)
     cursor = conn.execute("select * from {}".format(table_name))
@@ -44,7 +46,25 @@ def connect_check_column(column_name):
     else:
         print("{} already exists in table".format(column_name))
 
-# connect_check_column("text7")
+
+# select text from a row in db
+# need to read in tokenized text as a
+# need to specify column
+def select_rows():
+    global db
+    global table_name
+
+    variable = "e"
+
+    conn = sqlite.connect(db)
+    cur = conn.cursor()
+    cur2 = conn.cursor()
+
+    for row in cur.execute("SELECT * FROM Reviews" ):
+        cur2.execute('''UPDATE Reviews SET text5 = ?''', (variable))
+
+
+select_rows()
 
 ### Insert into database
 def populate_df(column_name):
@@ -57,11 +77,18 @@ def populate_df(column_name):
     cur = conn.cursor()
     trial = "o"
     insert_statement = '''
-        INSERT INTO Reviews({})
-        VALUES(?)
-        '''.format(column_name)
-    cur.execute(insert_statement, trial)
+        INSERT INTO Reviews(trial2, text5)
+        VALUES("1", "2")
+        '''
+    cur.execute(insert_statement)
     # conn.commit()
     # conn.close()
 
-populate_df("text5")
+
+
+# populate_df("text5")
+
+        # INSERT INTO Reviews (re.escape(column_name))
+
+# if __name__ == "__main__":
+#     main()
