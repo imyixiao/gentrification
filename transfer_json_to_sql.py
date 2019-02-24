@@ -215,6 +215,8 @@ def insert_review_from_json_v2():
     conn.close()
 
 
+def test_func():
+    print('test')
 
 '''
 in previous version, review table has no field of review month, 
