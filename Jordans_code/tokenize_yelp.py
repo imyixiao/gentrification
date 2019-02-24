@@ -4,11 +4,15 @@ import sys
 import os
 import regex as re
 import tqdm
+import sqlalchemy
+import spacy
+from spacy.lang.en.stop_words import STOP_WORDS
+import spacy,en_core_web_sm
+from collections import Counter
 
 # import PySpark
 
 # from pyspark import SparkConf, SparkContext
-
 
 db = "../data/yelp/yelp.db"
 table_name = "Reviews"
@@ -28,23 +32,19 @@ def connect_db(db = db):
 
 # check if column exists in database, otherwise, insert column in database
 # needs table name, column name, column type, db name
-def connect_check_column(column_name):
+def connect_check_column(column_name, column_type):
     global db
     global table_name
 
-    column_type = "TEXT"
-
+    # column_type = "TEXT"
     conn= sqlite.connect(db)
-    cursor = conn.execute("select * from {}".format(table_name))
+    cursor = conn.cursor()
 
-    colnames = cursor.description
-    columns = [row[0] for row in colnames]
-
-    if column_name not in columns:
+    try:
         cursor.execute('ALTER TABLE {} ADD COLUMN {} {};'.format(table_name, column_name, column_type))
         print("Inserted column {} in table".format(column_name))
-    else:
-        print("{} already exists in table".format(column_name))
+    except Exception as e: 
+        print(e)
 
 
 # select text from a row in db
@@ -64,7 +64,7 @@ def select_rows():
         cur2.execute('''UPDATE Reviews SET text5 = ?''', (variable))
 
 
-select_rows()
+# select_rows()
 
 
 ### Insert into database
@@ -91,5 +91,7 @@ def populate_df(column_name):
 
         # INSERT INTO Reviews (re.escape(column_name))
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    # main()
+    connect_check_column("test2", "TEXT")
+
