@@ -95,3 +95,7 @@ if __name__ == "__main__":
     # main()
     connect_check_column("test2", "TEXT")
 
+
+
+# add column 
+#  look at def add_review_month_in_review_table(path = yelp_db_path) in transfer_json_to_sql.py
