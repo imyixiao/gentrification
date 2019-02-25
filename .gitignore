@@ -1,2 +1,4 @@
 
 data/yelp/yelp.db
+zillow_data/gentrification_eligibility.csv
+zillow_data/gentrifying_and_eligible_neighborhoods.csv

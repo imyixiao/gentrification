@@ -50,6 +50,7 @@ gentrification/
       review.json
    zillow_data/
       Zip_time_series.csv
+      gentrifying_and_eligible_neighborhoods.csv
    yelp.db
    zillow.db
 ```
