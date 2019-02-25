@@ -17,12 +17,18 @@ zillow time series data by zipcode
 '''
 zillow_path = "../zillow_data/Zip_time_series.csv"
 
+'''
+gentrification yearly eligibility and status by zipcode and cbsa
+'''
+gentrification_path = "zillow_data/gentrifying_and_eligible_neighborhoods.csv"
+
 
 '''
 yelp databse path
 '''
 yelp_db_path = "../yelp.db"
 zillow_db_path = "../zillow.db"
+gentrification_db_path = "../gentrification.db"
 
 
 '''
