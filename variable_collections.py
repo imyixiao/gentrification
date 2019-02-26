@@ -20,7 +20,6 @@ zillow_path = "../zillow_data/Zip_time_series.csv"
 '''
 gentrification yearly eligibility and status by zipcode and cbsa
 '''
-gentrification_path = "zillow_data/gentrifying_and_eligible_neighborhoods.csv"
 
 
 '''
@@ -29,7 +28,7 @@ yelp databse path
 yelp_db_path = "../yelp.db"
 zillow_db_path = "../zillow.db"
 gentrification_db_path = "../gentrification.db"
-
+gentrification_path = './data/gentrification_eligibility.csv'
 
 '''
 when query sql database, cache is stored for furture use 
@@ -52,6 +51,3 @@ business.json and review.json from yelp dataset website
 '''
 business_json_path = '../yelp_data/business.json'
 review_json_path = '../yelp_data/review.json'
-
-
-gentrification_eligibility_path = './data/gentrification_eligibility.csv'
