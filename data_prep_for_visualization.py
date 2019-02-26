@@ -15,6 +15,7 @@ def retreive_restaurant_category_by_zipcode(zipcode):
     if zipcode not in baseline_cache:
 
         res_by_zipcode_list = select_all_restaurants_by_zipcode(zipcode)
+        print(res_by_zipcode_list)
         category_dictribution_by_zipcode = dict()
         category_tol = dict()
 
@@ -55,6 +56,9 @@ def retreive_restaurant_category_by_zipcode(zipcode):
         baseline_cache[zipcode] = category_dictribution_by_zipcode
         baseline_cache[(str(zipcode) + "tol")] = sorted(category_tol.items(), key=operator.itemgetter(1), reverse = True)
 
+        print(zipcode)
+        print(category_dictribution_by_zipcode)
+        
         with open(baseline_cache_path, 'w') as fp:
             json.dump(baseline_cache, fp)
         fp.close()

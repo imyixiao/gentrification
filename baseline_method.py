@@ -16,9 +16,9 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     #use zipcode 44113 as our case analysis neighborhood
-
+    print(get_all_categories_sorted_by_total_freq(84047))
     #given restaurant category, zipcode, metrics, and plot
-    plot_category_and_zillow_timeseri('italian', '44113', 'ZHVI_SingleFamilyResidence')
+    #plot_category_and_zillow_timeseri('italian', '83402', 'ZHVI_SingleFamilyResidence')
 
 
 
