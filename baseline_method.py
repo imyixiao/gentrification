@@ -13,6 +13,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
 from sklearn.svm import LinearSVC
 
+
 def query_gentrification(gentrification_db_path):
     conn = sqlite3.connect(gentrification_db_path)
     c = conn.cursor()
