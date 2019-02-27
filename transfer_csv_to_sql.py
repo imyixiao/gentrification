@@ -11,6 +11,11 @@ functions used to transfer csv format file to sql format tables
 '''
 
 
+def read_csv_header_list(csv_path):
+    with open(csv_path, 'r') as infile:
+        reader = csv.DictReader(infile)
+        fieldnames = reader.fieldnames
+        return fieldnames
 
 
 
@@ -23,6 +28,7 @@ def read_csv_header(csv_path):
     with open(csv_path, 'r') as infile:
         reader = csv.DictReader(infile)
         fieldnames = reader.fieldnames
+        #print(fieldnames)
         for field in fieldnames:
             cols_all[field] = index
             index += 1
@@ -107,37 +113,36 @@ def insert_from_csv_to_sql_zillow(csv_path = zillow_path, table_name = 'Zillow',
     reader = csv.reader(zillow_file)
     next(reader, None)
     id = 0
-    if table_name == 'Zillow':
-        for row in reader:
-            try:
-                #print(row)
-                date = row[0]
-                region_name = row[1]
-                year = date.split("-")[0]
-                if int(year) < year_bar:
-                    continue
-                month = date.split("-")[1]
-                new_date = year + "-" + month
-                vals = [str(id), new_date, year, month, region_name]
-                state = "INSERT INTO " + table_name + " (id, Date, year, month, RegionName"
-                for col in cols:
-                    if len(row[cols_all[col]]) == 0:
-                        vals.append(0)
-                    else:
-                        vals.append(row[cols_all[col]])
-                    state += ", "
-                    state += col
-                state += ") VALUES (?,?,?,?,?"
-                for i in range(len(cols)):
-                    state += ",?"
-                state += ");"
-                print(vals)
-                c.execute(state, vals)
-                conn.commit()
-                print("inserted " + str(region_name) + " in " + str(new_date))
-                id += 1
-            except Exception as e:
-                print(str(e))      
+    for row in reader:
+        try:
+            #print(row)
+            date = row[0]
+            region_name = row[1]
+            year = date.split("-")[0]
+            if int(year) < year_bar:
+                continue
+            month = date.split("-")[1]
+            new_date = year + "-" + month
+            vals = [str(id), new_date, year, month, region_name]
+            state = "INSERT INTO " + table_name + " (id, Date, year, month, RegionName"
+            for col in cols:
+                if len(row[cols_all[col]]) == 0:
+                    vals.append(0)
+                else:
+                    vals.append(row[cols_all[col]])
+                state += ", "
+                state += col
+            state += ") VALUES (?,?,?,?,?"
+            for i in range(len(cols)):
+                state += ",?"
+            state += ");"
+            print(vals)
+            c.execute(state, vals)
+            conn.commit()
+            print("inserted " + str(region_name) + " in " + str(new_date))
+            id += 1
+        except Exception as e:
+            print(str(e))      
     conn.close()
 
 
