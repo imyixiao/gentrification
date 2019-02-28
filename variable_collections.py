@@ -54,3 +54,5 @@ review_json_path = '../yelp_data/review.json'
 
 gentri_chunk_cache_path = './data/gentri_chunk.json'
 yelp_merge_gentr_cache = '../yelp_merge_gentri_cache.json'
+
+sep_yelp_db = '../sep_yelp.db'
