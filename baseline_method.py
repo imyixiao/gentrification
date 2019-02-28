@@ -3,15 +3,25 @@ import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
+from matplotlib.colors import ListedColormap
 
 from variable_collections import zillow_db_path, gentrification_db_path, baseline_cache_path, zillow_path
 from cache_management import cache_write, cache_load
 from transfer_csv_to_sql import read_csv_header, create_zillow_table, read_csv_header_list
 
 from sklearn.model_selection import train_test_split
-from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
-from sklearn.svm import LinearSVC
+
+from sklearn.neural_network import MLPClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.gaussian_process import GaussianProcessClassifier
+from sklearn.gaussian_process.kernels import RBF
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 
 
 def query_gentrification(gentrification_db_path):
@@ -226,28 +236,60 @@ def insert_data_into_table(baseline_cache_path, zillow_db_path, table_name, bar 
 
 
 
-def ml_train(db_path, res_col, related_cols, method = 'svm'):
+def ml_train(db_path, res_col, related_cols, model):
+    conn = sqlite3.connect(db_path)
+    df = pd.read_sql(con = conn, sql="select * from Zillow_gentrification")
+    y = df.pop(res_col)
+    x = df[related_cols]
+    print(y)
+    X_train, X_test, y_train, y_test = train_test_split(x, y, random_state=17)
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    print("\nAccuracy score : %f" %(accuracy_score(y_test, y_pred)))
+
+
+
+def ml_classfier_compare(db_path, res_col, related_cols, model_list, names):
     conn = sqlite3.connect(db_path)
     df = pd.read_sql(con = conn, sql="select * from Zillow_gentrification")
     y = df.pop(res_col)
     x = df[related_cols]
     X_train, X_test, y_train, y_test = train_test_split(x, y, random_state=17)
-    gnb = GaussianNB()
-    gnb.fit(X_train, y_train)
-    y_pred = gnb.predict(X_test)
-    print("\nAccuracy score : %f" %(accuracy_score(y_test, y_pred)))
+    for i in range(len(names)):
+        model_list[i].fit(X_train, y_train)
+        y_pred = model_list[i].predict(X_test)
+        print("Model " + names[i] + " Accuracy score : %f" %(accuracy_score(y_test, y_pred)))
+
+
+
 
 
 if __name__ == '__main__':
     #query_zillow(zillow_db_path, gentrification_db_path)
     #update_zillow()
     #print(get_useful_zillow_record())
-    #print(choose_zillow_metrics())
+    #print(choose_zillow_metrics(0.05))
     #create_sql_table_for_useful('Zillow_gentrification', zillow_db_path)
     #data_prep_before_insert(baseline_cache_path)
     #insert_data_into_table(baseline_cache_path, zillow_db_path, 'Zillow_gentrification')
     cols_needed = list(choose_zillow_metrics().keys())
-    ml_train(zillow_db_path, 'eligible_gentrification', cols_needed)
+    #print(cols_needed)
+    #ml_train(zillow_db_path, 'eligible_gentrification', ['MedianRentalPricePerSqft_Studio','PctOfListingsWithPriceReductionsSeasAdj_AllHomes'])
+    names = ["Nearest Neighbors", "Linear SVM", "RBF SVM", "Gaussian Process",
+            "Decision Tree", "Random Forest", "Neural Net", "AdaBoost",
+            "Naive Bayes", "QDA"]
+    classifiers = [
+        KNeighborsClassifier(3),
+        SVC(kernel="linear", C=0.025),
+        SVC(gamma=2, C=1),
+        GaussianProcessClassifier(1.0 * RBF(1.0)),
+        DecisionTreeClassifier(max_depth=5),
+        RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),
+        MLPClassifier(alpha=1),
+        AdaBoostClassifier(),
+        GaussianNB(),
+        QuadraticDiscriminantAnalysis()]
+    ml_classfier_compare(zillow_db_path, 'eligible_gentrification', cols_needed, classifiers, names)
 
 
 
