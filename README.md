@@ -1,3 +1,28 @@
+#### important data
+```
+Zillow_gentrification.csv 
+path: drive/data/Zillow_gentrification.csv 
+description: merge zillow data with gentrification eligibility data by year and zipcode, 5 zillow metrics have been chosen, all NA values have been removed. our baseline method is based on this data 
+-----------------------------------------------------------------
+
+Yelp_gentrification
+formate1: sql table(year, zipcode, gentrification status, yelp review ids in this year and zipcode)
+path: drive/data/yelp.db
+
+formate2: json 
+path: drive/data/yelp_merge_gentri_cache.json (key is year_zipcode)
+
+descripion: merge yelp review data and gentrification data, our advanced method should base on this data 
+-----------------------------------------------------------------
+
+all_rev_ids.json
+path: drive/data/
+description: all the review ids could be found matched with gentrification data, do not extract features from review not in this cluster... it's not helpful in training models
+------------------------------------------------------------------
+
+
+```
+
 #### environment setting before running code
 ```
 #clone github to local, in terminal 
