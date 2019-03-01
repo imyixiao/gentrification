@@ -126,11 +126,74 @@ def query_yelp_with_year_and_zip(gentri_chunk_cache_path, yelp_db, res_cache_pat
 
 
 
+
+'''
+filter data with na yelp info
+merged data to sql
+'''
+def merge_data_to_sql(merge_data_cache_path, yelp_db):
+    merge_cache = cache_load(merge_data_cache_path)
+
+    keys = []
+    years = []
+    zipcodes = []
+    gentri_status = []
+    rev_nums = []
+    rev_ids_str = []
+
+    rev_ids_all = []
+
+    for key, val in merge_cache.items():
+        if len(val['yelp_info']) == 0:
+            continue
+        keys.append(key)
+        years.append(key.split("_")[0])
+        zipcodes.append(key.split("_")[1])
+        gentri_status.append(val['gentri_status'])
+        rev_ids = []
+        for info in val['yelp_info']:
+            rev_ids.append(info[0])
+        rev_ids_all.extend(rev_ids)
+        rev_nums.append(len(rev_ids))
+        revs = ",".join(rev_ids)
+        rev_ids_str.append(revs)
+
+    all_rev_ids = dict()
+    all_rev_ids['all_ids'] = rev_ids_all
+    cache_write('./data/all_rev_ids.json',all_rev_ids)
+
+    #create table 
+    conn = sqlite3.connect(yelp_db)
+    c = conn.cursor()
+    state = "CREATE TABLE IF NOT EXISTS Yelp_gentrification\
+        (year_zip  CHAR(50)  PRIMARY KEY     NOT NULL, \
+        year INT, \
+        zipcode     CHAR(10),\
+        gentri_status INT, \
+        rev_ids  TEXT, \
+        rev_num INT)"
+    c.execute(state)
+    print ("Table created successfully")
+    conn.commit()
+    
+    #insert data into table 
+    state = "INSERT INTO Yelp_gentrification (year_zip, year, zipcode, gentri_status, rev_ids, rev_num) VALUES (?,?,?,?,?,?);"
+    c.executemany(state, zip(keys, years, zipcodes, gentri_status, rev_ids_str, rev_nums))
+    print("insert successully")
+    conn.commit()
+
+    conn.close()
+
+
+
 if __name__ == "__main__":
     #print(seperate_gentri_to_chunks(gentrification_db_path, './data/gentri_chunk.json'))
-    
+    '''
     num = seperate_gentri_to_chunks(gentrification_db_path, gentri_chunk_cache_path)
     for i in range(num):
         query_yelp_with_year_and_zip(gentri_chunk_cache_path, yelp_db_path, yelp_merge_gentr_cache, i, num - 1)
-    
+    '''
     #sep_yelp_table(yelp_db_path, 2012, 2018, sep_yelp_db)
+    #merge_data_to_sql(yelp_merge_gentr_cache, yelp_db_path)
+    cache = cache_load('./data/all_rev_ids.json')
+    print(len(cache['all_ids']))
