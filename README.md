@@ -3,7 +3,8 @@
 res.json
 rev.json
 path: drive/data/
-description: reformated yelp data, res.json inlcude all resturant data, rev.json inlude all review data, in those two json file, a dict is provided, in dict, key is id.
+description: reformated and cleaned yelp data, res.json inlcude all resturant data, rev.json inlude all review data, 
+in those two json file, a dict is provided, in dict, key is id.
 
 Zillow_gentrification.csv 
 path: drive/data/Zillow_gentrification.csv 
