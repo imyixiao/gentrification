@@ -11,7 +11,7 @@ path: drive/data/yelp.db
 
 formate2: json 
 path: drive/data/yelp_merge_gentri_cache.json (key is year_zipcode)
-
+'yelp_info':review_id list
 descripion: merge yelp review data and gentrification data, our advanced method should base on this data 
 -----------------------------------------------------------------
 
