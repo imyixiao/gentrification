@@ -1,5 +1,10 @@
 #### important data
 ```
+res.json
+rev.json
+path: drive/data/
+description: reformated yelp data, res.json inlcude all resturant data, rev.json inlude all review data, in those two json file, a dict is provided, in dict, key is id.
+
 Zillow_gentrification.csv 
 path: drive/data/Zillow_gentrification.csv 
 description: merge zillow data with gentrification eligibility data by year and zipcode, 5 zillow metrics have been chosen, all NA values have been removed. our baseline method is based on this data 
