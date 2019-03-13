@@ -6,12 +6,12 @@ description: merge zillow data with gentrification eligibility data by year and 
 -----------------------------------------------------------------
 
 Yelp_gentrification
-formate1: sql table(year, zipcode, gentrification status, yelp review ids in this year and zipcode)
+formate1: sql table(year, zipcode, gentrification status, yelp review ids in this year and zipcode, num of reviews), already filter out 0 reviews record
 path: drive/data/yelp.db
 
 formate2: json 
-path: drive/data/yelp_merge_gentri_cache.json (key is year_zipcode)
-'yelp_info':review_id list
+path: drive/data/yelp_merge_gentri_cache.json (key is year_zipcode), not filter out 0 reviews record
+'yelp_info':review_id list, lots of value are empty
 descripion: merge yelp review data and gentrification data, our advanced method should base on this data 
 -----------------------------------------------------------------
 
