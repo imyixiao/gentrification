@@ -211,7 +211,7 @@ def review_json_clean_and_reformat():
             selected_rev_info[review_id] = info
             print("add one record!")
     with open(rev_json_path, 'w') as fp:
-            json.dump(selected_rev_info, fp)
+        json.dump(selected_rev_info, fp)
     fp.close()
 
             
