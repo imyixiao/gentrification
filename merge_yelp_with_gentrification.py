@@ -1,7 +1,8 @@
 from variable_collections import yelp_db_path, gentrification_db_path, baseline_cache_path, zillow_db_path, gentri_chunk_cache_path, yelp_merge_gentr_cache, sep_yelp_db
 from cache_management import cache_load, cache_write
 import sqlite3
-
+import json
+from variable_collections import all_rev_ids_path,rev_json_path, review_json_path
 
 '''
 seperate gentrification to chunks to finish task seperately
@@ -186,6 +187,37 @@ def merge_data_to_sql(merge_data_cache_path, yelp_db):
 
 
 
+'''
+all_rev_ids_path:all rev_ids we need
+rev_json_path: the json file we need created, key is review id(only select in all_rev_ids collections)
+review_json_path: original review files 
+'''
+def review_json_clean_and_reformat():
+    all_ids = cache_load(all_rev_ids_path)['all_ids']
+    selected_rev_info = dict()
+    with open(review_json_path) as input:
+        for line in input:
+            res_dict = json.loads(line.rstrip(';\n'))
+            review_id = res_dict['review_id']
+            if review_id not in all_ids:
+                continue
+            business_id = res_dict['business_id']
+            user_id = res_dict['user_id']
+            text = res_dict['text']
+            info = dict()
+            info['user_id'] = user_id
+            info['res_id'] = business_id
+            info['text'] = text
+            selected_rev_info[review_id] = info
+            print("add one record!")
+    with open(rev_json_path, 'w') as fp:
+            json.dump(selected_rev_info, fp)
+    fp.close()
+
+            
+    
+
+
 if __name__ == "__main__":
     #print(seperate_gentri_to_chunks(gentrification_db_path, './data/gentri_chunk.json'))
     '''
@@ -195,5 +227,6 @@ if __name__ == "__main__":
     '''
     #sep_yelp_table(yelp_db_path, 2012, 2018, sep_yelp_db)
     #merge_data_to_sql(yelp_merge_gentr_cache, yelp_db_path)
-    cache = cache_load('./data/all_rev_ids.json')
-    print(len(cache['all_ids']))
+    # cache = cache_load('./data/all_rev_ids.json')
+    # print(len(cache['all_ids']))
+    review_json_clean_and_reformat()

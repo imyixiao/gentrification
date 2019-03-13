@@ -52,7 +52,14 @@ business.json and review.json from yelp dataset website
 business_json_path = '../yelp_data/business.json'
 review_json_path = '../yelp_data/review.json'
 
+'''
+cleaned and reformated yelp data
+'''
+res_json_path = '../yelp_data/res.json'
+rev_json_path = '../yelp_data/rev.json'
+
 gentri_chunk_cache_path = './data/gentri_chunk.json'
 yelp_merge_gentr_cache = '../yelp_merge_gentri_cache.json'
 
 sep_yelp_db = '../sep_yelp.db'
+all_rev_ids_path = './data/all_rev_ids.json'
