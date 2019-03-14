@@ -200,6 +200,7 @@ def review_json_clean_and_reformat():
             res_dict = json.loads(line.rstrip(';\n'))
             review_id = res_dict['review_id']
             if review_id not in all_ids:
+                print("not the target!")
                 continue
             business_id = res_dict['business_id']
             user_id = res_dict['user_id']
@@ -210,6 +211,7 @@ def review_json_clean_and_reformat():
             info['text'] = text
             selected_rev_info[review_id] = info
             print("add one record!")
+    print("start to save!")
     with open(rev_json_path, 'w') as fp:
         json.dump(selected_rev_info, fp)
     fp.close()

@@ -57,6 +57,7 @@ cleaned and reformated yelp data
 '''
 res_json_path = '../yelp_data/res.json'
 rev_json_path = '../yelp_data/rev.json'
+rev_nlp_json_path = './data/rev_nlp.json'
 
 gentri_chunk_cache_path = './data/gentri_chunk.json'
 yelp_merge_gentr_cache = '../yelp_merge_gentri_cache.json'
