@@ -2,7 +2,8 @@ from variable_collections import yelp_db_path, gentrification_db_path, baseline_
 from cache_management import cache_load, cache_write
 import sqlite3
 import json
-from variable_collections import all_rev_ids_path,rev_json_path, review_json_path
+from variable_collections import all_rev_ids_path,rev_json_path, review_json_path, rev_json_clean_path
+import ijson
 
 '''
 seperate gentrification to chunks to finish task seperately
@@ -186,22 +187,12 @@ def merge_data_to_sql(merge_data_cache_path, yelp_db):
     conn.close()
 
 
-
-'''
-all_rev_ids_path:all rev_ids we need
-rev_json_path: the json file we need created, key is review id(only select in all_rev_ids collections)
-review_json_path: original review files 
-'''
-def review_json_clean_and_reformat():
-    all_ids = cache_load(all_rev_ids_path)['all_ids']
-    selected_rev_info = dict()
+def reformate():
+    reformated_rev_info = dict()
     with open(review_json_path) as input:
         for line in input:
             res_dict = json.loads(line.rstrip(';\n'))
             review_id = res_dict['review_id']
-            if review_id not in all_ids:
-                print("not the target!")
-                continue
             business_id = res_dict['business_id']
             user_id = res_dict['user_id']
             text = res_dict['text']
@@ -209,15 +200,32 @@ def review_json_clean_and_reformat():
             info['user_id'] = user_id
             info['res_id'] = business_id
             info['text'] = text
-            selected_rev_info[review_id] = info
+            reformated_rev_info[review_id] = info
             print("add one record!")
     print("start to save!")
     with open(rev_json_path, 'w') as fp:
-        json.dump(selected_rev_info, fp)
-    fp.close()
+        json.dump(reformated_rev_info, fp)
 
-            
-    
+# '''
+# all_rev_ids_path:all rev_ids we need
+# rev_json_path: the json file we need created, key is review id(only select in all_rev_ids collections)
+# review_json_path: original review files 
+# '''
+# def review_json_clean_and_reformat():
+#     with open("../rev_reformated.json", "r") as f:
+#         reformated_rev_info = json.load(f)
+#     f.close()
+#     print("here")
+#     all_ids = cache_load(all_rev_ids_path)['all_ids']
+#     selected_rev_info = dict()
+#     print("start to select!")
+#     for id in all_ids:
+#         print(id)
+#         selected_rev_info[id] = reformated_rev_info[id]
+#     print("final step!")
+#     with open(rev_json_clean_path, 'w') as fp:
+#         json.dump(selected_rev_info, fp)
+
 
 
 if __name__ == "__main__":
@@ -231,4 +239,9 @@ if __name__ == "__main__":
     #merge_data_to_sql(yelp_merge_gentr_cache, yelp_db_path)
     # cache = cache_load('./data/all_rev_ids.json')
     # print(len(cache['all_ids']))
-    review_json_clean_and_reformat()
+    #reformate()
+    #review_json_clean_and_reformat()
+    f = open(rev_json_path, 'r')
+    obj = ijson.items(f, 'JG3RmJwtIELWIGNoCfDGeA')
+    for o in obj:
+        print(str(o))

@@ -56,7 +56,8 @@ review_json_path = '../yelp_data/review.json'
 cleaned and reformated yelp data
 '''
 res_json_path = '../yelp_data/res.json'
-rev_json_path = '../yelp_data/rev.json'
+rev_json_path = '../yelp_data/rev_reformated.json'
+rev_json_clean_path = '../yelp_data/rev_clean.json'
 rev_nlp_json_path = './data/rev_nlp.json'
 
 gentri_chunk_cache_path = './data/gentri_chunk.json'
