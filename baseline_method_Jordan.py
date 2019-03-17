@@ -7,7 +7,7 @@ import numpy as np
 import sklearn
 from matplotlib.colors import ListedColormap
 
-from variable_collections import zillow_db_path, gentrification_db_path, baseline_cache_path, zillow_path
+from variable_collections_Jordan import zillow_db_path, gentrification_db_path, baseline_cache_path, zillow_path
 from cache_management import cache_write, cache_load
 from transfer_csv_to_sql import read_csv_header, create_zillow_table, read_csv_header_list
 
