@@ -28,7 +28,9 @@ yelp databse path
 yelp_db_path = "../yelp.db"
 zillow_db_path = "../zillow.db"
 gentrification_db_path = "../gentrification.db"
-gentrification_path = './data/gentrification_eligibility.csv'
+gentrification_eligibility_path = './data/gentrification_eligibility.csv'
+gentrification_csv_path = './data/cleaned_gentrification_table.csv'
+gentrification_csv_path_with_key = './data/gentrification_csv_path_with_key.csv'
 
 '''
 when query sql database, cache is stored for furture use 
@@ -65,3 +67,5 @@ yelp_merge_gentr_cache = '../yelp_merge_gentri_cache.json'
 
 sep_yelp_db = '../sep_yelp.db'
 all_rev_ids_path = './data/all_rev_ids.json'
+
+category_feature_with_eligibility = '../category.csv'
