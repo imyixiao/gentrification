@@ -151,6 +151,7 @@ def add_top_category_feature_and_build_csv(limit = 50):
 
 
 def ml_classfier_compare(data_path, res_col, related_cols, model_list, names):
+    print(related_cols)
     df = pandas.read_csv(data_path)
     y = df.pop(res_col)
     x = df[related_cols]

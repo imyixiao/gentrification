@@ -107,12 +107,18 @@ def prepare_category_csv_file():
     merged_pd = pd.merge(gentri_df, category_df, on="key")
     merged_pd.to_csv("./data/category_with_new_def.csv")
 
+def merge_avg_nlp_with_gentr():
+    gentri_df = pd.read_csv(gentrification_csv_path_with_key)
+    avg_df = pd.read_csv('../avg_nlp.csv')
+    merged_pd = pd.merge(gentri_df, avg_df, on="key")
+    merged_pd.to_csv("./data/avg_df_gentri.csv")
 
 def run_classifer():
     merged_pd = pd.read_csv("./data/category_with_new_def.csv")
     res_cols = ['gentrifying_pct_chg_income_homeval_educ','gentrifying_pct_chg_income_homeval','gentrifying_pct_chg_homeval']
     all_cols = list(merged_pd)
-    feature_cols = [c for c in all_cols if c not in res_cols]
+    feature_cols = [c for c in all_cols if c not in res_cols and c not in ['key'] and 'Unnamed' not in c]
+    print(feature_cols)
 
     classifiers = [
         KNeighborsClassifier(3),
@@ -133,11 +139,38 @@ def run_classifer():
         ml_classfier_compare('./data/category_with_new_def.csv', res_c, feature_cols, classifiers, names)
 
 
+def run_classifer_avg_nlp():
+    merged_pd = pd.read_csv("./data/avg_df_gentri.csv")
+    res_cols = ['gentrifying_pct_chg_income_homeval_educ','gentrifying_pct_chg_income_homeval','gentrifying_pct_chg_homeval']
+    all_cols = list(merged_pd)
+    feature_cols = [c for c in all_cols if c not in res_cols and c not in ['key'] and 'Unnamed' not in c]
+
+
+    classifiers = [
+        KNeighborsClassifier(3),
+        SVC(kernel="linear", C=0.025),
+        SVC(gamma=2, C=1),
+        GaussianProcessClassifier(1.0 * RBF(1.0)),
+        DecisionTreeClassifier(max_depth=5),
+        RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),
+        MLPClassifier(alpha=1),
+        AdaBoostClassifier(),
+        GaussianNB()]
+    
+    names = ['knn','svc-linear','svc','gaussian','decision tree','random forest','mlp','adaboost','gnb',]
+    for res_c in res_cols:
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        print("Result for " + res_c)
+        print("--------------------------------------")
+        ml_classfier_compare('./data/avg_df_gentri.csv', res_c, feature_cols, classifiers, names)
+
+
+
 def run_classifer_unbalanced():
     merged_pd = pd.read_csv("./data/category_with_new_def.csv")
     res_cols = ['gentrifying_pct_chg_income_homeval_educ','gentrifying_pct_chg_income_homeval','gentrifying_pct_chg_homeval']
     all_cols = list(merged_pd)
-    feature_cols = [c for c in all_cols if c not in res_cols]
+    feature_cols = [c for c in all_cols if c not in res_cols and c not in ['key'] and 'Unnamed' not in c]
 
     classifiers = [
         KNeighborsClassifier(3),
@@ -173,8 +206,52 @@ def run_classifer_unbalanced():
     ml_classfier_compare('./data/category_with_new_def_unbalanced_2.csv', 'gentrifying_pct_chg_income_homeval', feature_cols, classifiers, names)
 
 
+def run_classifer_unbalanced_avg_nlp():
+    merged_pd = pd.read_csv("./data/avg_df_gentri.csv")
+    res_cols = ['gentrifying_pct_chg_income_homeval_educ','gentrifying_pct_chg_income_homeval','gentrifying_pct_chg_homeval']
+    all_cols = list(merged_pd)
+    feature_cols = [c for c in all_cols if c not in res_cols and c not in ['key'] and 'Unnamed' not in c]
+
+    classifiers = [
+        KNeighborsClassifier(3),
+        SVC(kernel="linear", C=0.025),
+        SVC(gamma=2, C=1),
+        GaussianProcessClassifier(1.0 * RBF(1.0)),
+        DecisionTreeClassifier(max_depth=5),
+        RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),
+        MLPClassifier(alpha=1),
+        AdaBoostClassifier(),
+        GaussianNB()]
+    
+    names = ['knn','svc-linear','svc','gaussian','decision tree','random forest','mlp','adaboost','gnb',]
+
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    print("Result for gentrifying_pct_chg_income_homeval_educ")
+    print("--------------------------------------")
+    n = round(709 * 0.14)
+    sample_yes = merged_pd.ix[merged_pd.gentrifying_pct_chg_income_homeval_educ == 1].sample(n=n, replace=False, random_state=0)
+    sample_no = merged_pd.ix[merged_pd.gentrifying_pct_chg_income_homeval_educ == 0].sample(n=n, replace=False, random_state=0)
+    df_1 = pd.concat([sample_yes, sample_no])
+    df_1.to_csv("./data/avg_nlp_unbalanced_1.csv")
+    ml_classfier_compare('./data/avg_nlp_unbalanced_1.csv', 'gentrifying_pct_chg_income_homeval_educ', feature_cols, classifiers, names)
+
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    print("Result for gentrifying_pct_chg_income_homeval")
+    print("--------------------------------------")
+    n = round(709 * 0.25)
+    sample_yes = merged_pd.ix[merged_pd.gentrifying_pct_chg_income_homeval == 1].sample(n=n, replace=False, random_state=0)
+    sample_no = merged_pd.ix[merged_pd.gentrifying_pct_chg_income_homeval == 0].sample(n=n, replace=False, random_state=0)
+    df_2 = pd.concat([sample_yes, sample_no])
+    df_2.to_csv("./data/avg_nlp_unbalanced_2.csv")
+    ml_classfier_compare('./data/avg_nlp_unbalanced_2.csv', 'gentrifying_pct_chg_income_homeval', feature_cols, classifiers, names)
+
+
 
 if __name__ == "__main__":
     # print(check_gentrification_eligibility('44112', '2017'))
     # prepare_category_csv_file()
-    run_classifer_unbalanced()
+    # run_classifer_unbalanced()
+    # merge_avg_nlp_with_gentr()
+    # run_classifer()
+    # run_classifer_avg_nlp()
+    run_classifer_unbalanced_avg_nlp()
