@@ -88,6 +88,22 @@ def review_distribution():
     plt.show()
 
 
+def add_zipcode_year():
+    gentri_df = pd.read_csv('../data/gentrification_csv_path_with_key.csv')
+    years = []
+    zipcodes = []
+    for _, row in gentri_df.iterrows():
+        key = row['key']
+        year = key.split("_")[0]
+        zipcode = key.split("_")[1]
+        years.append(year)
+        zipcodes.append(zipcode)
+    gentri_df["year"] = years
+    gentri_df["zipcode"] = zipcodes
+    gentri_df.to_csv("../data/gentri_status.csv")
+    print(set(years))
+
+
 def prepare_category_csv_file():
     #add key col into cleaned gentrification table 
     gentrification_df = pd.read_csv(gentrification_csv_path)
@@ -254,4 +270,5 @@ if __name__ == "__main__":
     # merge_avg_nlp_with_gentr()
     # run_classifer()
     # run_classifer_avg_nlp()
-    run_classifer_unbalanced_avg_nlp()
+    # run_classifer_unbalanced_avg_nlp()
+    add_zipcode_year()
