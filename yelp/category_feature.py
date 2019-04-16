@@ -156,6 +156,7 @@ def ml_classfier_compare(data_path, res_col, related_cols, model_list, names):
     y = df.pop(res_col)
     x = df[related_cols]
     X_train, X_test, y_train, y_test = train_test_split(x, y, random_state=17)
+    print(X_train)
     for i in range(len(names)):
         model_list[i].fit(X_train, y_train)
         y_pred = model_list[i].predict(X_test)
