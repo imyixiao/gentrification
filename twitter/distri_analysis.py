@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
+from math import log
 
 gentri_table = "../data/gentri_status.csv"
 twitter = "../data/twitter.csv"
@@ -54,7 +55,7 @@ def distri_zipcode_by_year(the_year = 2013):
                 twitter_distri[zipcode] = 0
             twitter_distri[zipcode] += 1
         for _,v in twitter_distri.items():
-            res.append(v)
+            res.append(log(v,10))
         data.append(res)
     plt.boxplot(data)
     plt.xticks([1, 2, 3, 4, 5], ['2013','2014','2015','2016','2017'])
