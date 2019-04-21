@@ -43,7 +43,7 @@ def grid_visual():
             text = ax.text(j, i, res[i, j],
                         ha="center", va="center", color="w")
 
-    ax.set_title("Prediction Results(AUR) on Different Definitions, Classifers, Pooling Ways")
+    ax.set_title("Prediction Results(AUC) on Different Definitions, Classifers, Pooling Ways")
     fig.tight_layout()
     plt.show()
 
